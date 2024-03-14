@@ -17,14 +17,30 @@ export default {
       type: String,
       default: "field",
     },
-  },
-  mounted() {
-    this.$emit("changeValue", this.name, false);
+    rules: {
+      type: Object,
+      default: () => {},
+    },
+    showErrors: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     inputValue() {
-      this.$emit("changeValue", this.name, this.inputValue);
+      if (Object.keys(this.rules).length && this.$v.value.$invalid) {
+        this.$emit("changeValue", this.name, "not valid");
+      } else {
+        this.$emit("changeValue", this.name, this.inputValue);
+      }
     },
+  },
+  mounted() {
+    if (Object.keys(this.rules).length) {
+      this.$emit("changeValue", this.name, "not valid");
+    } else {
+      this.$emit("changeValue", this.name, false);
+    }
   },
 };
 </script>

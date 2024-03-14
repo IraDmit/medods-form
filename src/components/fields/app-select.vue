@@ -14,7 +14,7 @@
       </div>
     </div>
     <span class="error" v-for="(item, key) in rules" :key="key">{{
-      $v.value[key].$invalid ? $v.value[key].$message : ""
+      $v.value[key].$invalid && showErrors ? $v.value[key].$message : ""
     }}</span>
   </div>
 </template>
@@ -40,6 +40,10 @@ export default {
     name: {
       type: String,
       default: "field",
+    },
+    showErrors: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -68,11 +72,16 @@ export default {
   },
   watch: {
     inputValue() {
-      this.$emit("changeValue", this.name, this.inputValue);
+      if (Object.keys(this.rules).length && this.$v.value.$invalid) {
+        this.$emit("changeValue", this.name, "not valid");
+      } else {
+        this.$emit("changeValue", this.name, this.inputValue);
+      }
     },
   },
   mounted() {
-    document.addEventListener("click", this.handleClickOutside);
+    if (Object.keys(this.rules).length)
+      this.$emit("changeValue", this.name, "not valid");
   },
 };
 </script>

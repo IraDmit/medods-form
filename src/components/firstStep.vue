@@ -9,9 +9,10 @@
       :rules="field.rules"
       :options="field.options"
       :name="field.name"
+      :showErrors="showErrors"
       @changeValue="changeValue"
     />
-    <div class="btn">Далее</div>
+    <div class="btn" @click="toNextStep">Далее</div>
   </div>
 </template>
 
@@ -21,7 +22,6 @@ import appSelect from "./fields/app-select.vue";
 import appMultiSelect from "./fields/app-multiSelect.vue";
 import appPhone from "./fields/app-phone.vue";
 import appDate from "./fields/app-date.vue";
-import { useVuelidate } from "@vuelidate/core";
 import { required, maxLength } from "@vuelidate/validators";
 import appCheckbox from "./fields/app-checkbox.vue";
 
@@ -119,19 +119,32 @@ export default {
         {
           component: "appCheckbox",
           name: "isCall",
+          rules: {},
         },
       ],
       stepData: {},
+      showErrors: false,
     };
   },
   methods: {
     changeValue(key, value) {
-      this.stepData[key] = value;
+      this.$set(this.stepData, key, value);
+    },
+    toNextStep() {
+      this.showErrors = true;
     },
   },
   computed: {
-    $v() {
-      return useVuelidate();
+    isValid() {
+      return !Object.values(this.stepData).includes("not valid");
+    },
+  },
+  watch: {
+    stepData: {
+      handler() {
+        this.$emit("updateFirstStep", this.stepData, this.isValid);
+      },
+      deep: true,
     },
   },
 };
@@ -186,6 +199,15 @@ export default {
         visibility: visible;
       }
     }
+  }
+  .btn {
+    padding: 10px 15px;
+    max-width: 300px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 7px;
+    text-align: center;
+    background-color: #feca0a;
   }
 }
 </style>
