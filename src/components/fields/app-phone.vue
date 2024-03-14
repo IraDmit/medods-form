@@ -1,21 +1,13 @@
 <template>
   <div class="form-field">
     <input
-      type="date"
-      :placeholder="placeholder"
-      v-model="inputValue"
-      v-if="placeholder === 'Дата рождения*'"
-    />
-    <input
       type="text"
       :placeholder="placeholder"
       v-model="inputValue"
       v-phone
-      v-if="placeholder === 'Номер телефона*'"
     />
-    <input type="text" :placeholder="placeholder" v-model="inputValue" v-else />
-    <span clas="error" v-for="(item, key) in rules" :key="key">{{
-      $v.value[key].$invalid
+    <span class="error" v-for="(item, key) in rules" :key="key">{{
+      $v.value[key].$invalid ? $v.value[key].$message : ""
     }}</span>
   </div>
 </template>
@@ -57,6 +49,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    name: {
+      type: String,
+      default: "field",
+    },
   },
   data() {
     return {
@@ -71,33 +67,12 @@ export default {
       return useVuelidate(this.rules, this.inputValue);
     },
   },
+  watch: {
+    inputValue() {
+      this.$emit("changeValue", this.name, this.inputValue);
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-.form-field {
-  max-width: 675px;
-  width: 100%;
-
-  input {
-    width: 100%;
-    border-radius: 10px;
-    padding: 15px 20px;
-    background: #f5f4f9;
-    border: unset;
-    outline: none;
-    color: #949494;
-    transition: 0.3s ease;
-    &::placeholder {
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 120%;
-      color: #949494;
-    }
-    &:focus {
-      border: 1px solid #d9d9d9;
-      background-color: #fff;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

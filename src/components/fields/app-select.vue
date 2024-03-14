@@ -1,16 +1,21 @@
 <template>
-  <div class="select" @click="isOpen = !isOpen">
-    <span @click="isOpen = !isOpen">{{ inputValue }}</span>
-    <div class="options" :class="{ open: isOpen }">
-      <div
-        class="item"
-        v-for="(option, idx) in options"
-        :key="'option' + idx"
-        @click="selectValue($event)"
-      >
-        {{ option.item }}
+  <div class="form-field" @click="isOpen = !isOpen">
+    <div class="select">
+      <span @click="isOpen = !isOpen">{{ inputValue || placeholder }}</span>
+      <div class="options" :class="{ open: isOpen }">
+        <div
+          class="item"
+          v-for="(option, idx) in options"
+          :key="'option' + idx"
+          @click="selectValue($event)"
+        >
+          {{ option.item }}
+        </div>
       </div>
     </div>
+    <span class="error" v-for="(item, key) in rules" :key="key">{{
+      $v.value[key].$invalid ? $v.value[key].$message : ""
+    }}</span>
   </div>
 </template>
 
@@ -32,10 +37,14 @@ export default {
       type: Array,
       default: () => {},
     },
+    name: {
+      type: String,
+      default: "field",
+    },
   },
   data() {
     return {
-      inputValue: this.placeholder,
+      inputValue: null,
       isOpen: false,
     };
   },
@@ -52,6 +61,18 @@ export default {
       this.open = !this.isOpen;
       this.inputValue = e.target.innerHTML;
     },
+    handleClickOutside({ target }) {
+      console.log(target);
+      if (target && !target.classlist?.contains("select")) this.isOpen = false;
+    },
+  },
+  watch: {
+    inputValue() {
+      this.$emit("changeValue", this.name, this.inputValue);
+    },
+  },
+  mounted() {
+    document.addEventListener("click", this.handleClickOutside);
   },
 };
 </script>

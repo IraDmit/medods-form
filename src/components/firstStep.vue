@@ -8,31 +8,32 @@
       :placeholder="field.placeholder"
       :rules="field.rules"
       :options="field.options"
+      :name="field.name"
+      @changeValue="changeValue"
     />
-    <!-- 
-    <div class="select custom-input">
-      <span @click="openSelect">Лечащий врач</span>
-      <div class="options">
-        <div class="item">Иванов</div>
-        <div class="item">Захаров</div>
-        <div class="item">Чернышева</div>
-      </div>
-    </div> -->
-
-    <div class="checkbox">
-      <input type="checkbox" class="custom-input" />
-      <span class="text-checkbox">Не отправлять СМС</span>
-    </div>
+    <div class="btn">Далее</div>
   </div>
 </template>
 
 <script>
-import appInput from "./app-input.vue";
-import appSelect from "./app-select.vue";
+import appInput from "./fields/app-input.vue";
+import appSelect from "./fields/app-select.vue";
+import appMultiSelect from "./fields/app-multiSelect.vue";
+import appPhone from "./fields/app-phone.vue";
+import appDate from "./fields/app-date.vue";
+import { useVuelidate } from "@vuelidate/core";
 import { required, maxLength } from "@vuelidate/validators";
+import appCheckbox from "./fields/app-checkbox.vue";
 
 export default {
-  components: { appInput, appSelect },
+  components: {
+    appInput,
+    appSelect,
+    appPhone,
+    appDate,
+    appMultiSelect,
+    appCheckbox,
+  },
   data() {
     return {
       isOpen: false,
@@ -41,31 +42,37 @@ export default {
           component: "appInput",
           placeholder: "Фамилия*",
           rules: { required, maxLength: maxLength(10) },
+          name: "lastName",
         },
         {
           component: "appInput",
           placeholder: "Имя*",
-          rules: { required, maxLength: maxLength(10) },
+          rules: { required },
+          name: "name",
         },
         {
           component: "appInput",
           placeholder: "Отчество",
-          rules: { required, maxLength: maxLength(10) },
+          rules: {},
+          name: "thirdName",
         },
         {
-          component: "appInput",
+          component: "appDate",
           placeholder: "Дата рождения*",
-          rules: { required, maxLength: maxLength(10) },
+          rules: { required },
+          name: "dateOfBitrh",
         },
         {
-          component: "appInput",
+          component: "appPhone",
           placeholder: "Номер телефона*",
-          rules: { required, maxLength: maxLength(10) },
+          rules: { required },
+          name: "phone",
         },
         {
           component: "appSelect",
           placeholder: "Пол",
-          rules: { required, maxLength: maxLength(10) },
+          rules: {},
+          name: "sex",
           options: [
             {
               item: "Мужской",
@@ -76,9 +83,10 @@ export default {
           ],
         },
         {
-          component: "appSelect",
+          component: "appMultiSelect",
           placeholder: "Группа клиентов*",
-          rules: { required, maxLength: maxLength(10) },
+          rules: { required },
+          name: "groupClient",
           options: [
             {
               item: "VIP",
@@ -94,7 +102,8 @@ export default {
         {
           component: "appSelect",
           placeholder: "Лечащий врач",
-          rules: { required, maxLength: maxLength(10) },
+          rules: {},
+          name: "doctor",
           options: [
             {
               item: "Иванов",
@@ -107,8 +116,23 @@ export default {
             },
           ],
         },
+        {
+          component: "appCheckbox",
+          name: "isCall",
+        },
       ],
+      stepData: {},
     };
+  },
+  methods: {
+    changeValue(key, value) {
+      this.stepData[key] = value;
+    },
+  },
+  computed: {
+    $v() {
+      return useVuelidate();
+    },
   },
 };
 </script>
