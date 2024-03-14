@@ -72,7 +72,7 @@ export default {
   },
   watch: {
     inputValue() {
-      if (Object.keys(this.rules).length && this.$v.value.$invalid) {
+      if (this.rules?.required && this.$v.value.$invalid) {
         this.$emit("changeValue", this.name, "not valid");
       } else {
         this.$emit("changeValue", this.name, this.inputValue);
@@ -80,7 +80,7 @@ export default {
     },
   },
   mounted() {
-    if (Object.keys(this.rules).length)
+    if (this.rules?.required)
       this.$emit("changeValue", this.name, "not valid");
   },
 };
@@ -110,6 +110,9 @@ export default {
     border: 1px solid #d9d9d9;
     background-color: #fff;
     z-index: 2;
+    .item {
+      padding: 7px 0px;
+    }
     .option:hover {
       color: #000;
     }

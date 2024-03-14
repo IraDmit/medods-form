@@ -84,7 +84,7 @@ export default {
   },
   watch: {
     inputValue() {
-      if (Object.keys(this.rules).length && this.$v.value.$invalid) {
+      if (this.rules?.required && this.$v.value.$invalid) {
         this.$emit("changeValue", this.name, "not valid");
       } else {
         this.$emit("changeValue", this.name, this.inputValue.join(","));
@@ -92,7 +92,7 @@ export default {
     },
   },
   //   mounted() {
-  //     if (Object.keys(this.rules).length)
+  //     if (this.rules?.required)
   //       this.$emit("changeValue", this.name, "not valid");
   //   },
 };

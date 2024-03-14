@@ -3,7 +3,7 @@
     <h2 class="titleStep">01. Основная информация</h2>
     <component
       v-for="(field, idx) in fieldsList"
-      :key="'field' + idx"
+      :key="'step1field' + idx"
       :is="field.component"
       :placeholder="field.placeholder"
       :rules="field.rules"
@@ -22,7 +22,7 @@ import appSelect from "./fields/app-select.vue";
 import appMultiSelect from "./fields/app-multiSelect.vue";
 import appPhone from "./fields/app-phone.vue";
 import appDate from "./fields/app-date.vue";
-import { required, maxLength } from "@vuelidate/validators";
+import { required } from "@vuelidate/validators";
 import appCheckbox from "./fields/app-checkbox.vue";
 
 export default {
@@ -41,7 +41,7 @@ export default {
         {
           component: "appInput",
           placeholder: "Фамилия*",
-          rules: { required, maxLength: maxLength(10) },
+          rules: { required },
           name: "lastName",
         },
         {
@@ -150,64 +150,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.step {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  grid-gap: 20px;
-  .titleStep {
-    font-size: 32px;
-    line-height: 120%;
-    color: #171414;
-    font-weight: 700;
-  }
-  .custom-input {
-    border-radius: 10px;
-    padding: 15px 20px;
-    max-width: 675px;
-    width: 100%;
-    background: #f5f4f9;
-    border: unset;
-    outline: none;
-    color: #949494;
-    &::placeholder {
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 120%;
-      color: #949494;
-    }
-  }
-  .select {
-    cursor: pointer;
-    position: relative;
-    .options {
-      position: absolute;
-      bottom: -65px;
-      left: 0;
-      background-color: #f5f4f9;
-      border-radius: 10px;
-      padding: 15px 20px;
-      width: 100%;
-      opacity: 0;
-      visibility: hidden;
-      .option:hover {
-        color: #000;
-      }
-      &.open {
-        opacity: 1;
-        visibility: visible;
-      }
-    }
-  }
-  .btn {
-    padding: 10px 15px;
-    max-width: 300px;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 7px;
-    text-align: center;
-    background-color: #feca0a;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
