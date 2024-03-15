@@ -1,24 +1,33 @@
 <template>
   <div class="step">
-    <h2 class="titleStep">02. Адрес</h2>
-    <component
-      v-for="(field, idx) in fieldsList"
-      :key="'step2field' + idx"
-      :is="field.component"
-      :placeholder="field.placeholder"
-      :rules="field.rules"
-      :name="field.name"
-      :showErrors="showErrors"
-      @changeValue="changeValue"
-    />
-    <div class="btn" @click="toNextStep">Далее</div>
+    <h2 class="titleStep" @click="slideToggle($event.target)" ref="secondStep">
+      02. Адрес <img src="../assets/img/icon-arrow-down.png" alt="arrow-down" />
+    </h2>
+    <div class="wrp" hidden>
+      <component
+        v-for="(field, idx) in fieldsList"
+        :key="'step2field' + idx"
+        :is="field.component"
+        :placeholder="field.placeholder"
+        :rules="field.rules"
+        :name="field.name"
+        :showErrors="showErrors"
+        @changeValue="changeValue"
+      />
+      <div class="btn-wrp">
+        <div class="btn btn-black" @click="toPrevStep">Назад</div>
+        <div class="btn" @click="toNextStep">Далее</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import appInput from "./fields/app-input.vue";
 import { required } from "@vuelidate/validators";
+import accordion from "../mixins/accordion.js";
 export default {
+  mixins: [accordion],
   components: { appInput },
   data() {
     return {
@@ -70,6 +79,12 @@ export default {
     },
     toNextStep() {
       this.showErrors = true;
+      if (this.isValid) {
+        this.$emit("changeStep", "secondStep", "thirdStep");
+      }
+    },
+    toPrevStep() {
+      this.$emit("changeStep", "secondStep", "firstStep");
     },
   },
   watch: {

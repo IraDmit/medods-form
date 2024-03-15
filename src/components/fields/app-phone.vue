@@ -1,5 +1,6 @@
 <template>
   <div class="form-field">
+    <span class="placeholder">{{ placeholder }}</span>
     <input
       type="text"
       :placeholder="placeholder"
@@ -81,8 +82,7 @@ export default {
     },
   },
   mounted() {
-    if (this.rules?.required)
-      this.$emit("changeValue", this.name, "not valid");
+    if (this.rules?.required) this.$emit("changeValue", this.name, "not valid");
   },
 };
 </script>

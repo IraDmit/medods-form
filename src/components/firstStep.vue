@@ -1,18 +1,25 @@
 <template>
   <div class="step">
-    <h2 class="titleStep">01. Основная информация</h2>
-    <component
-      v-for="(field, idx) in fieldsList"
-      :key="'step1field' + idx"
-      :is="field.component"
-      :placeholder="field.placeholder"
-      :rules="field.rules"
-      :options="field.options"
-      :name="field.name"
-      :showErrors="showErrors"
-      @changeValue="changeValue"
-    />
-    <div class="btn" @click="toNextStep">Далее</div>
+    <h2 class="titleStep active" @click="slideToggle($event.target)">
+      01. Основная информация
+      <img src="../assets/img/icon-arrow-down.png" alt="arrow-down" />
+    </h2>
+    <div class="wrp">
+      <component
+        v-for="(field, idx) in fieldsList"
+        :key="'step1field' + idx"
+        :is="field.component"
+        :placeholder="field.placeholder"
+        :rules="field.rules"
+        :options="field.options"
+        :name="field.name"
+        :showErrors="showErrors"
+        @changeValue="changeValue"
+      />
+      <div class="btn-wrp">
+        <div class="btn" @click="toNextStep">Далее</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,8 +31,10 @@ import appPhone from "./fields/app-phone.vue";
 import appDate from "./fields/app-date.vue";
 import { required } from "@vuelidate/validators";
 import appCheckbox from "./fields/app-checkbox.vue";
+import accordion from "../mixins/accordion.js";
 
 export default {
+  mixins: [accordion],
   components: {
     appInput,
     appSelect,
@@ -126,17 +135,21 @@ export default {
       showErrors: false,
     };
   },
+  computed: {
+    isValid() {
+      return !Object.values(this.stepData).includes("not valid");
+    },
+  },
   methods: {
     changeValue(key, value) {
       this.$set(this.stepData, key, value);
     },
     toNextStep() {
       this.showErrors = true;
-    },
-  },
-  computed: {
-    isValid() {
-      return !Object.values(this.stepData).includes("not valid");
+
+      if (this.isValid) {
+        this.$emit("changeStep", "firstStep", "secondStep");
+      }
     },
   },
   watch: {

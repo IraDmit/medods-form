@@ -1,56 +1,48 @@
-/* #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-  font-weight: normal;
+body {
+  font-family: "Montserrat";
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+* {
+  box-sizing: border-box;
+
 }
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-} */
 
 .container {
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
   padding: 0 50px;
+
   @media (max-width: 1024px) {
     padding: 0 30px;
   }
+
   @media (max-width: 768px) {
     padding: 0 20px;
   }
+
   @media (max-width: 576px) {
     padding: 0 15px;
   }
 }
 
+.steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .step {
+    max-width: 675px;
+    width: 100%;
+  }
+}
+
 .form-field {
-  max-width: 675px;
+
   width: 100%;
+  margin: 10px 0;
 
   input {
     width: 100%;
@@ -59,18 +51,31 @@ a,
     background: #f5f4f9;
     border: unset;
     outline: none;
-    color: #949494;
     transition: 0.3s ease;
+    font-size: 16px;
+
     &::placeholder {
       font-weight: 400;
       font-size: 16px;
       line-height: 120%;
       color: #949494;
     }
+
     &:focus {
       border: 1px solid #d9d9d9;
       background-color: #fff;
     }
+  }
+
+  .placeholder {
+    font-size: 18px;
+
+  }
+
+  .error {
+    color: red;
+    font-size: 15px;
+
   }
 }
 
@@ -78,21 +83,65 @@ a,
   display: flex;
   align-items: center;
   flex-direction: column;
-  grid-gap: 20px;
+
   .titleStep {
+    width: 100%;
     font-size: 32px;
     line-height: 120%;
     color: #171414;
     font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+
+    &.active img {
+      transform: rotate(180deg);
+    }
+
+    img {
+      width: 32px;
+      height: 32px;
+
+      transition: .3s;
+
+      @media(max-width: 576px) {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    @media (max-width: 820px) {
+      font-size: 28px;
+    }
+
+    @media (max-width: 576px) {
+      font-size: 20px;
+    }
   }
+
+  .wrp {
+    width: 100%;
+  }
+}
+
+.btn-wrp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 30px;
 }
 
 .btn {
   padding: 10px 15px;
-  max-width: 300px;
+  max-width: 270px;
   width: 100%;
   cursor: pointer;
   border-radius: 7px;
   text-align: center;
   background-color: #feca0a;
+
+  &.btn-black {
+    background-color: #000;
+    color: #fff;
+  }
 }

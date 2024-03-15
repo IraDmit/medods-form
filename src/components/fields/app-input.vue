@@ -1,5 +1,6 @@
 <template>
   <div class="form-field">
+    <span class="placeholder">{{ placeholder }}</span>
     <input type="text" :placeholder="placeholder" v-model="inputValue" />
 
     <span class="error" v-for="(item, key) in rules" :key="key">{{

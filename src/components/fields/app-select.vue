@@ -1,7 +1,10 @@
 <template>
   <div class="form-field" @click="isOpen = !isOpen">
+    <span class="placeholder">{{ placeholder }}</span>
     <div class="select">
-      <span @click="isOpen = !isOpen">{{ inputValue || placeholder }}</span>
+      <span @click="isOpen = !isOpen" :class="{ selected: inputValue }">{{
+        inputValue || placeholder
+      }}</span>
       <div class="options" :class="{ open: isOpen }">
         <div
           class="item"
@@ -80,8 +83,7 @@ export default {
     },
   },
   mounted() {
-    if (this.rules?.required)
-      this.$emit("changeValue", this.name, "not valid");
+    if (this.rules?.required) this.$emit("changeValue", this.name, "not valid");
   },
 };
 </script>
@@ -96,6 +98,12 @@ export default {
   width: 100%;
   background: #f5f4f9;
   color: #949494;
+  span {
+    pointer-events: none;
+    &.selected {
+      color: #000;
+    }
+  }
   .options {
     position: absolute;
     top: 90%;
@@ -113,7 +121,7 @@ export default {
     .item {
       padding: 7px 0px;
     }
-    .option:hover {
+    .item:hover {
       color: #000;
     }
     &.open {

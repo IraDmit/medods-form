@@ -50,6 +50,7 @@ export default {
   display: flex;
   grid-gap: 11px;
   align-items: center;
+  margin: 10px 0;
   label {
     cursor: pointer;
   }

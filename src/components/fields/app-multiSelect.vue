@@ -1,5 +1,6 @@
 <template>
   <div class="form-field">
+    <span class="placeholder">{{ placeholder }}</span>
     <div class="select" @click="isOpen = !isOpen">
       <span @click="isOpen = !isOpen" v-if="!inputValue.length">{{
         placeholder
@@ -108,6 +109,9 @@ export default {
   width: 100%;
   background: #f5f4f9;
   color: #949494;
+  span {
+    pointer-events: none;
+  }
   .options {
     position: absolute;
     top: 90%;
@@ -122,7 +126,10 @@ export default {
     border: 1px solid #d9d9d9;
     background-color: #fff;
     z-index: 2;
-    .option:hover {
+    .item {
+      padding: 7px 0px;
+    }
+    .item:hover {
       color: #000;
     }
     &.open {
@@ -138,6 +145,7 @@ export default {
       padding: 3px 5px;
       border-radius: 7px;
       border: 1px solid #d9d9d9;
+      color: #000;
     }
   }
 }

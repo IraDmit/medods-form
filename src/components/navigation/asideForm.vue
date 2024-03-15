@@ -12,5 +12,6 @@ export default {};
 .btn {
   position: sticky;
   top: 0;
+  max-width: unset;
 }
 </style>

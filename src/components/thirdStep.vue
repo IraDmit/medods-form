@@ -1,18 +1,25 @@
 <template>
   <div class="step">
-    <h2 class="titleStep">03. Паспорт</h2>
-    <component
-      v-for="(field, idx) in fieldsList"
-      :key="'step3field' + idx"
-      :is="field.component"
-      :placeholder="field.placeholder"
-      :rules="field.rules"
-      :options="field.options"
-      :name="field.name"
-      :showErrors="showErrors"
-      @changeValue="changeValue"
-    />
-    <div class="btn" @click="toNextStep">Далее</div>
+    <h2 class="titleStep" @click="slideToggle($event.target)" ref="thirdStep">
+      03. Паспорт
+      <img src="../assets/img/icon-arrow-down.png" alt="arrow-down" />
+    </h2>
+    <div class="wrp" hidden>
+      <component
+        v-for="(field, idx) in fieldsList"
+        :key="'step3field' + idx"
+        :is="field.component"
+        :placeholder="field.placeholder"
+        :rules="field.rules"
+        :options="field.options"
+        :name="field.name"
+        :showErrors="showErrors"
+        @changeValue="changeValue"
+      />
+      <div class="btn-wrp">
+        <div class="btn btn-black" @click="toPrevStep">Назад</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -22,7 +29,9 @@ import appInput from "./fields/app-input.vue";
 import { required, maxLength, minLength, numeric } from "@vuelidate/validators";
 import appSelect from "./fields/app-select.vue";
 import appDate from "./fields/app-date.vue";
+import accordion from "../mixins/accordion.js";
 export default {
+  mixins: [accordion],
   components: { appInput, appSelect, appDate },
   data() {
     return {
@@ -82,8 +91,9 @@ export default {
     changeValue(key, value) {
       this.$set(this.stepData, key, value);
     },
-    toNextStep() {
+    toPrevStep() {
       this.showErrors = true;
+      if (this.isValid) this.$emit("changeStep", "thirdStep", "secondStep");
     },
   },
   watch: {
